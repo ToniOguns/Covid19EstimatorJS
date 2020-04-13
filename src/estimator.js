@@ -16,9 +16,9 @@ let { timeToElapse } = data;
 // normalize days; check for weeks and months if used
 if (periodType === 'months') {
 	timeToElapse = Math.trunc(timeToElapse * 30);
-}else if (periodType === 'weeks') {
+} else if (periodType === 'weeks') {
 	timeToElapse = Math.trunc(timeToElapse * 7);
-}else {
+} else {
 	timeToElapse = Math.trunc(timeToElapse * 1);
 }
 
