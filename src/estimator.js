@@ -3,47 +3,43 @@ const fs = require('fs');
 // Estimator
 const covid19ImpactEstimator = (data) => {
 // Destructuring the given data
-const {
-	region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
-	periodType,
-	reportedCases,
-	totalHospitalBeds
-} = data;
-let { timeToElapse } = data;
+  const {
+	  region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
+	  periodType,
+	  reportedCases,
+	  totalHospitalBeds
+	} = data;
+	let { timeToElapse } = data;
+	// Custom Functions and Variables
+	// normalize days; check for weeks and months if used
+	if (periodType === 'months') {
+		timeToElapse = Math.trunc(timeToElapse * 30);
+	} else if (periodType === 'weeks') {
+		timeToElapse = Math.trunc(timeToElapse * 7);
+	} else {
+		timeToElapse = Math.trunc(timeToElapse * 1);
+	}
+	// calculate InfectionsByRequestedTime
+	const calculateInfectionsByRequestedTime = (currentlyInfected) => {
+		const factor = Math.trunc(timeToElapse / 3);
+		return currentlyInfected * 2 ** factor;
+	};
+	// calculate AvailableBeds
+	const calculateAvailableBeds = (severeCasesByRequestedTime) => {
+		const bedsAvailable = totalHospitalBeds * 0.35;
+		const shortage = bedsAvailable - severeCasesByRequestedTime;
+		const result = shortage < 0 ? shortage : bedsAvailable;
+		return Math.trunc(result);
+	};
+	// calculate dollarsInFlight
+	const calculateDollarsInFlight = (infectionsByRequestedTime) => {
+		const infections = infectionsByRequestedTime * avgDailyIncomeInUSD * avgDailyIncomePopulation;
+		const result = infections / timeToElapse;
+		return Math.trunc(result);
+	};
 
-// Custom Functions and Variables
-
-// normalize days; check for weeks and months if used
-if (periodType === 'months') {
-	timeToElapse = Math.trunc(timeToElapse * 30);
-} else if (periodType === 'weeks') {
-	timeToElapse = Math.trunc(timeToElapse * 7);
-} else {
-	timeToElapse = Math.trunc(timeToElapse * 1);
-}
-
-// calculate InfectionsByRequestedTime
-const calculateInfectionsByRequestedTime = (currentlyInfected) => {
-	const factor = Math.trunc(timeToElapse / 3);
-	return currentlyInfected * 2 ** factor;
-};
-// calculate AvailableBeds
-const calculateAvailableBeds = (severeCasesByRequestedTime) => {
-	const bedsAvailable = totalHospitalBeds * 0.35;
-	const shortage = bedsAvailable - severeCasesByRequestedTime;
-	const result = shortage < 0 ? shortage : bedsAvailable;
-	return Math.trunc(result);
-};
-
-// calculate dollarsInFlight
-const calculateDollarsInFlight = (infectionsByRequestedTime) => {
-	const infections = infectionsByRequestedTime * avgDailyIncomeInUSD * avgDailyIncomePopulation;
-	const result = infections / timeToElapse;
-	return Math.trunc(result);
-};
-
-// the best case estimation
-const impact = {};
+	// the best case estimation
+	const impact = {};
 	// challenge 1
 	impact.currentlyInfected = reportedCases * 10;
 	impact.infectionsByRequestedTime = calculateInfectionsByRequestedTime(
