@@ -4,38 +4,38 @@ const fs = require('fs');
 const covid19ImpactEstimator = (data) => {
   // Destructuring the given data
   const {
-	region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
-	periodType,
-	reportedCases,
-	totalHospitalBeds
+    region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
+    periodType,
+    reportedCases,
+    totalHospitalBeds
   } = data;
   let { timeToElapse } = data;
   // Custom Functions and Variables
   // normalize days; check for weeks and months if used
   if (periodType === 'months') {
-	timeToElapse = Math.trunc(timeToElapse * 30);
+    timeToElapse = Math.trunc(timeToElapse * 30);
   } else if (periodType === 'weeks') {
-	timeToElapse = Math.trunc(timeToElapse * 7);
+    timeToElapse = Math.trunc(timeToElapse * 7);
   } else {
-	timeToElapse = Math.trunc(timeToElapse * 1);
+    timeToElapse = Math.trunc(timeToElapse * 1);
   }
   // calculate InfectionsByRequestedTime
   const calculateInfectionsByRequestedTime = (currentlyInfected) => {
-	const factor = Math.trunc(timeToElapse / 3);
-	return currentlyInfected * 2 ** factor;
+    const factor = Math.trunc(timeToElapse / 3);
+    return currentlyInfected * 2 ** factor;
   };
   // calculate AvailableBeds
   const calculateAvailableBeds = (severeCasesByRequestedTime) => {
-	const bedsAvailable = totalHospitalBeds * 0.35;
-	const shortage = bedsAvailable - severeCasesByRequestedTime;
-	const result = shortage < 0 ? shortage : bedsAvailable;
-	return Math.trunc(result);
+    const bedsAvailable = totalHospitalBeds * 0.35;
+    const shortage = bedsAvailable - severeCasesByRequestedTime;
+    const result = shortage < 0 ? shortage : bedsAvailable;
+    return Math.trunc(result);
   };
   // calculate dollarsInFlight
   const calculateDollarsInFlight = (infectionsByRequestedTime) => {
-	const infections = infectionsByRequestedTime * avgDailyIncomeInUSD * avgDailyIncomePopulation;
-	const result = infections / timeToElapse;
-	return Math.trunc(result);
+    const infections = infectionsByRequestedTime * avgDailyIncomeInUSD * avgDailyIncomePopulation;
+    const result = infections / timeToElapse;
+    return Math.trunc(result);
   };
 
   // the best case estimation
@@ -43,24 +43,24 @@ const covid19ImpactEstimator = (data) => {
   // challenge 1
   impact.currentlyInfected = reportedCases * 10;
   impact.infectionsByRequestedTime = calculateInfectionsByRequestedTime(
-	impact.currentlyInfected
+    impact.currentlyInfected
   );
   // challenge 2
   impact.severeCasesByRequestedTime = Math.trunc(
-	impact.infectionsByRequestedTime * 0.15
+    impact.infectionsByRequestedTime * 0.15
   );
   impact.hospitalBedsByRequestedTime = calculateAvailableBeds(
-	impact.severeCasesByRequestedTime
+    impact.severeCasesByRequestedTime
   );
   // challenge 3
   impact.casesForICUByRequestedTime = Math.trunc(
-	impact.infectionsByRequestedTime * 0.05
+    impact.infectionsByRequestedTime * 0.05
   );
   impact.casesForVentilatorsByRequestedTime = Math.trunc(
-	impact.infectionsByRequestedTime * 0.02
+    impact.infectionsByRequestedTime * 0.02
   );
   impact.dollarsInFlight = calculateDollarsInFlight(
-	impact.infectionsByRequestedTime
+    impact.infectionsByRequestedTime
   );
 
   // the severe case estimation
@@ -68,30 +68,30 @@ const covid19ImpactEstimator = (data) => {
   // challenge 1
   severeImpact.currentlyInfected = reportedCases * 50;
   severeImpact.infectionsByRequestedTime = calculateInfectionsByRequestedTime(
-	severeImpact.currentlyInfected
+    severeImpact.currentlyInfected
   );
   // challenge 2
   severeImpact.severeCasesByRequestedTime = Math.trunc(
-	severeImpact.infectionsByRequestedTime * 0.15
+    severeImpact.infectionsByRequestedTime * 0.15
   );
   severeImpact.hospitalBedsByRequestedTime = calculateAvailableBeds(
-	severeImpact.severeCasesByRequestedTime
+    severeImpact.severeCasesByRequestedTime
   );
   // challenge 3
   severeImpact.casesForICUByRequestedTime = Math.trunc(
-	severeImpact.infectionsByRequestedTime * 0.05
+    severeImpact.infectionsByRequestedTime * 0.05
   );
   severeImpact.casesForVentilatorsByRequestedTime = Math.trunc(
-	severeImpact.infectionsByRequestedTime * 0.02
+    severeImpact.infectionsByRequestedTime * 0.02
   );
   severeImpact.dollarsInFlight = calculateDollarsInFlight(
-	severeImpact.infectionsByRequestedTime
+    severeImpact.infectionsByRequestedTime
   );
 
   return {
-	data, // the input data you got
-	impact, // your best case estimation
-	severeImpact // your severe case estimation
+    data, // the input data you got
+    impact, // your best case estimation
+    severeImpact // your severe case estimation
   };
 };
 
@@ -99,36 +99,38 @@ const filterInput = (data) => {
   if (!data) return false;
   // Destructuring the given data
   const {
-	region: { name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation },
-	periodType,
-	timeToElapse,
-	reportedCases,
-	population,
-	totalHospitalBeds
+    region: { name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation },
+    periodType,
+    timeToElapse,
+    reportedCases,
+    population,
+    totalHospitalBeds
   } = data;
 
   if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation
-	|| !periodType || !timeToElapse
-	|| !reportedCases || !population || !totalHospitalBeds
+    || !periodType || !timeToElapse
+    || !reportedCases || !population || !totalHospitalBeds
   ) {
-	return false;
+    return false;
   }
-	return true;
+    return true;
 };
 
 const keepMyLog = (req, responseStatusCode) => {
   const { keepLog } = req;
   keepLog.ktime = Date.now();
   keepLog.kcode = responseStatusCode;
-  const { kmethod, kpath, kcode, stime, ktime } = keepLog;
+  const {
+	  kmethod, kpath, kcode, stime, ktime
+	} = keepLog;
   fs.appendFile(
-	`${__dirname}/logs.txt`,
-	`${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
-	(err) => {
+    `${__dirname}/logs.txt`,
+    `${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
+    (err) => {
 	  if (err) {
 		throw err;
 	  }
-	}
+    }
   );
 };
 
@@ -140,11 +142,11 @@ const welcome = (req, res) => {
 // POST: JSON
 const dataJson = (req, res) => {
   if (!filterInput(req.body)) {
-	keepMyLog(req, 400);
-	return res.status(400).json({
+    keepMyLog(req, 400);
+    return res.status(400).json({
 	  status: 'Error',
 	  message: 'Invalid Input. All values were not provided.'
-	});
+    });
   }
   const covid19 = covid19ImpactEstimator(req.body);
   keepMyLog(req, 200);
@@ -165,11 +167,11 @@ const dataXml = (req, res) => {
 	  region: {
       name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
     },
-	periodType,
-	reportedCases,
-	totalHospitalBeds,
-	population,
-	timeToElapse
+    periodType,
+    reportedCases,
+    totalHospitalBeds,
+    population,
+    timeToElapse
   } = data;
   const xml = `
 <?xml version='1.0' encoding='UTF-8' ?>
