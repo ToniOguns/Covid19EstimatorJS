@@ -22,7 +22,10 @@ module.exports = {
     "indent": ["off", "tabs"],
     "no-unused-vars": "off",
     "space-infix-ops": "off",
+    "curly": "off",
+    "operator-linebreak": ["off", "after"],
     "consistent-return": "off",
+    "nonblock-statement-body-position": ["off", "beside"],
     "no-tabs": ["off", { allowIndentationTabs: true }],
     "object-curly-newline": ["off", {
       "ObjectExpression": "always",
