@@ -164,7 +164,7 @@ const dataXml = (req, res) => {
 		keepMyLog(req, 400);
 		return res.status(400).json({
 			status: 'Error',
-			message: 'Invalid Input. All values were not provided.',
+			message: 'Invalid Input. All values were not provided.'
 		});
 	}
 	const { data, impact, severeImpact } = covid19ImpactEstimator(req.body);
