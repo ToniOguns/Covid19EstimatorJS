@@ -1,28 +1,29 @@
+import estimator from './estimator.js';
+
 const fs = require('fs');
-import estimator from"./estimator.js";
 
 const filterInput = (data) => {
-    if (!data) return false;
-    // Destructuring the given data
-    const {
-      region: {
-        name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
-      },
-      periodType,
-      timeToElapse,
-      reportedCases,
-      population,
-      totalHospitalBeds
-    } = data;
+  if (!data) return false;
+  // Destructuring the given data
+  const {
+    region: {
+      name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+    },
+    periodType,
+    timeToElapse,
+    reportedCases,
+    population,
+    totalHospitalBeds
+  } = data;
 
-    if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation
-      || !periodType || !timeToElapse
-      || !reportedCases || !population || !totalHospitalBeds
-    ) {
-      return false;
-    }
-    return true;
-  };
+  if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation
+    || !periodType || !timeToElapse
+    || !reportedCases || !population || !totalHospitalBeds
+  ) {
+    return false;
+  }
+  return true;
+};
 
   const keepMyLog = (req, responseStatusCode) => {
     const { keepLog } = req;
@@ -133,9 +134,9 @@ const filterInput = (data) => {
     });
   };
 
-  module.exports = {
-  welcome,
-  dataJson,
-  dataXml,
-  logs
+module.exports = {
+welcome,
+dataJson,
+dataXml,
+logs
 };
