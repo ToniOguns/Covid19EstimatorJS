@@ -100,8 +100,8 @@ const filterInput = (data) => {
   // Destructuring the given data
   const {
     region: {
-		name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
-	},
+      name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+    },
     periodType,
     timeToElapse,
     reportedCases,
@@ -123,14 +123,14 @@ const keepMyLog = (req, responseStatusCode) => {
   keepLog.ktime = Date.now();
   keepLog.kcode = responseStatusCode;
   const {
-	kmethod, kpath, kcode, stime, ktime
+    kmethod, kpath, kcode, stime, ktime
   } = keepLog;
   fs.appendFile(
     `${__dirname}/logs.txt`,
     `${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
     (err) => {
       if (err) {
-	    throw err;
+        throw err;
       }
     }
   );
