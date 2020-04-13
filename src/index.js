@@ -1,4 +1,4 @@
-import estimator from './estimator.js';
+import estimator from './estimator';
 
 const fs = require('fs');
 
@@ -25,64 +25,64 @@ const filterInput = (data) => {
   return true;
 };
 
-  const keepMyLog = (req, responseStatusCode) => {
-    const { keepLog } = req;
-    keepLog.ktime = Date.now();
-    keepLog.kcode = responseStatusCode;
-    const {
-      kmethod, kpath, kcode, stime, ktime
-    } = keepLog;
-    fs.appendFile(
-      `${__dirname}/logs.txt`,
-      `${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
-      (err) => {
-        if (err) {
-          throw err;
-        }
+const keepMyLog = (req, responseStatusCode) => {
+  const { keepLog } = req;
+  keepLog.ktime = Date.now();
+  keepLog.kcode = responseStatusCode;
+  const {
+    kmethod, kpath, kcode, stime, ktime
+  } = keepLog;
+  fs.appendFile(
+    `${__dirname}/logs.txt`,
+    `${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
+    (err) => {
+      if (err) {
+        throw err;
       }
-    );
-  };
-
-  // Get: display welcome message
-  const welcome = (req, res) => {
-    keepMyLog(req, 200);
-    res.status(200).send('<h4>Welcome to covid-19-estimator-api</h4>');
-  };
-  // POST: JSON
-  const dataJson = (req, res) => {
-    if (!filterInput(req.body)) {
-      keepMyLog(req, 400);
-      return res.status(400).json({
-        status: 'Error',
-        message: 'Invalid Input. All values were not provided.'
-      });
     }
-    const covid19 = estimator(req.body);
-    keepMyLog(req, 200);
-    return res.status(200).json(covid19);
-  };
+  );
+};
 
-  // POST: XML
-  const dataXml = (req, res) => {
-    if (!filterInput(req.body)) {
-      keepMyLog(req, 400);
-      return res.status(400).json({
-        status: 'Error',
-        message: 'Invalid Input. All values were not provided.'
-      });
-    }
-    const { data, impact, severeImpact } = estimator(req.body);
-    const {
-      region: {
-        name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
-      },
-      periodType,
-      reportedCases,
-      totalHospitalBeds,
-      population,
-      timeToElapse
-    } = data;
-    const xml = `
+// Get: display welcome message
+const welcome = (req, res) => {
+  keepMyLog(req, 200);
+  res.status(200).send('<h4>Welcome to covid-19-estimator-api</h4>');
+};
+// POST: JSON
+const dataJson = (req, res) => {
+  if (!filterInput(req.body)) {
+    keepMyLog(req, 400);
+    return res.status(400).json({
+      status: 'Error',
+      message: 'Invalid Input. All values were not provided.'
+    });
+  }
+  const covid19 = estimator(req.body);
+  keepMyLog(req, 200);
+  return res.status(200).json(covid19);
+};
+
+// POST: XML
+const dataXml = (req, res) => {
+  if (!filterInput(req.body)) {
+    keepMyLog(req, 400);
+    return res.status(400).json({
+      status: 'Error',
+      message: 'Invalid Input. All values were not provided.'
+    });
+  }
+  const { data, impact, severeImpact } = estimator(req.body);
+  const {
+    region: {
+      name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+    },
+    periodType,
+    reportedCases,
+    totalHospitalBeds,
+    population,
+    timeToElapse
+  } = data;
+  const xml = `
   <?xml version='1.0' encoding='UTF-8' ?>
   <root>
     <data>
