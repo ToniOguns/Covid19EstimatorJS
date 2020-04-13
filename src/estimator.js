@@ -99,7 +99,9 @@ const filterInput = (data) => {
   if (!data) return false;
   // Destructuring the given data
   const {
-    region: { name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation },
+    region: {
+		name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+	},
     periodType,
     timeToElapse,
     reportedCases,
@@ -113,7 +115,7 @@ const filterInput = (data) => {
   ) {
     return false;
   }
-    return true;
+  return true;
 };
 
 const keepMyLog = (req, responseStatusCode) => {
@@ -121,15 +123,15 @@ const keepMyLog = (req, responseStatusCode) => {
   keepLog.ktime = Date.now();
   keepLog.kcode = responseStatusCode;
   const {
-	  kmethod, kpath, kcode, stime, ktime
-	} = keepLog;
+	kmethod, kpath, kcode, stime, ktime
+  } = keepLog;
   fs.appendFile(
     `${__dirname}/logs.txt`,
     `${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
     (err) => {
-	  if (err) {
-		throw err;
-	  }
+      if (err) {
+	    throw err;
+      }
     }
   );
 };
@@ -144,8 +146,8 @@ const dataJson = (req, res) => {
   if (!filterInput(req.body)) {
     keepMyLog(req, 400);
     return res.status(400).json({
-	  status: 'Error',
-	  message: 'Invalid Input. All values were not provided.'
+      status: 'Error',
+      message: 'Invalid Input. All values were not provided.'
     });
   }
   const covid19 = covid19ImpactEstimator(req.body);
@@ -156,15 +158,15 @@ const dataJson = (req, res) => {
 // POST: XML
 const dataXml = (req, res) => {
   if (!filterInput(req.body)) {
-	keepMyLog(req, 400);
-	return res.status(400).json({
-	  status: 'Error',
-	  message: 'Invalid Input. All values were not provided.'
-	});
+    keepMyLog(req, 400);
+    return res.status(400).json({
+      status: 'Error',
+      message: 'Invalid Input. All values were not provided.'
+    });
   }
   const { data, impact, severeImpact } = covid19ImpactEstimator(req.body);
   const {
-	  region: {
+    region: {
       name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
     },
     periodType,
@@ -218,9 +220,9 @@ const dataXml = (req, res) => {
 // GET: logs
 const logs = (req, res) => {
   fs.readFile(`${__dirname}/logs.txt`, 'utf8', (err, data) => {
-	if (err) throw err;
-	res.set('Content-Type', 'text/plain');
-	keepMyLog(req, 200);
+    if (err) throw err;
+    res.set('Content-Type', 'text/plain');
+    keepMyLog(req, 200);
     res.status(200).send(data);
   });
 };
