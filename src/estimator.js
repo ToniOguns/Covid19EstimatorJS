@@ -152,7 +152,7 @@ const dataJson = (req, res) => {
   }
   const covid19 = covid19ImpactEstimator(req.body);
   keepMyLog(req, 200);
-  res.status(200).json(covid19);
+  return res.status(200).json(covid19);
 };
 
 // POST: XML
@@ -214,7 +214,7 @@ const dataXml = (req, res) => {
   res.type('application/xml');
 
   keepMyLog(req, 200);
-  res.status(200).send(xml);
+  return res.status(200).send(xml);
 };
 
 // GET: logs
