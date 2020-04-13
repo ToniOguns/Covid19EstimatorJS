@@ -21,8 +21,11 @@ module.exports = {
     "indent": ["off", 2],
     "indent": ["off", "tabs"],
     "no-tabs": ["off", { allowIndentationTabs: true }],
+    "operator-linebreak": ["off", "after"],
     "object-curly-newline": ["off", {
       "ObjectExpression": "always",
+      "no-unused-vars": "off",
+      "space-infix-ops": "off",
       "ObjectPattern": { "multiline": true },
       "ImportDeclaration": "never",
       "ExportDeclaration": { "multiline": true, "minProperties": 3 }

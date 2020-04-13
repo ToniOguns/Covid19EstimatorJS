@@ -7,7 +7,7 @@ const {
 	region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
 	periodType,
 	reportedCases,
-	totalHospitalBeds,
+	totalHospitalBeds
 } = data;
 let { timeToElapse } = data;
 
@@ -107,7 +107,7 @@ const filterInput = (data) => {
 		timeToElapse,
 		reportedCases,
 		population,
-		totalHospitalBeds,
+		totalHospitalBeds
 	} = data;
 
 	if (!name
@@ -120,12 +120,12 @@ const filterInput = (data) => {
 		||!population
 		||!totalHospitalBeds
 	)
-		return false;
+	return false;
 
 	return true;
 };
 
-const keepMyLog = (req, responseStatusCode, next) => {
+const keepMyLog = (req, responseStatusCode) => {
 	const { keepLog } = req;
 	keepLog.ktime = Date.now();
 	keepLog.kcode = responseStatusCode;
@@ -221,7 +221,7 @@ const dataXml = (req, res) => {
 };
 
 // GET: logs
-const logs = (req, res, next) => {
+const logs = (req, res) => {
 	fs.readFile(`${__dirname}/logs.txt`, 'utf8', (err, data) => {
 		if (err) throw err;
 		res.set('Content-Type', 'text/plain');
