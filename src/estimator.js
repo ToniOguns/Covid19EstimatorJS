@@ -94,7 +94,7 @@ const impact = {};
 	return {
 		data, // the input data you got
 		impact, // your best case estimation
-		severeImpact, // your severe case estimation
+		severeImpact // your severe case estimation
 	};
 };
 
@@ -110,16 +110,15 @@ const filterInput = (data) => {
 		totalHospitalBeds,
 	} = data;
 
-	if (
-		!name ||
-		!avgAge ||
-		!avgDailyIncomeInUSD ||
-		!avgDailyIncomePopulation ||
-		!periodType ||
-		!timeToElapse ||
-		!reportedCases ||
-		!population ||
-		!totalHospitalBeds
+	if (!name
+		||!avgAge
+		||!avgDailyIncomeInUSD
+		||!avgDailyIncomePopulation
+		||!periodType
+		||!timeToElapse
+		||!reportedCases
+		||!population
+		||!totalHospitalBeds
 	)
 		return false;
 
@@ -141,17 +140,17 @@ const keepMyLog = (req, responseStatusCode, next) => {
 };
 
 // Get: display welcome message
-const welcome = (req, res, next) => {
+const welcome = (req, res) => {
 	keepMyLog(req, 200);
-	res.status(200).send("<h4>Welcome to covid-19-estimator-api</h4>");
+	res.status(200).send('<h4>Welcome to covid-19-estimator-api</h4>');
 };
 // POST: JSON
-const dataJson = (req, res, next) => {
+const dataJson = (req, res) => {
 	if (!filterInput(req.body)) {
 		keepMyLog(req, 400);
 		return res.status(400).json({
-			status: "Error",
-			message: "Invalid Input. All values were not provided.",
+			status: 'Error',
+			message: 'Invalid Input. All values were not provided.'
 		});
 	}
 	const covid19 = covid19ImpactEstimator(req.body);
@@ -160,12 +159,12 @@ const dataJson = (req, res, next) => {
 };
 
 // POST: XML
-const dataXml = (req, res, next) => {
+const dataXml = (req, res) => {
 	if (!filterInput(req.body)) {
 		keepMyLog(req, 400);
 		return res.status(400).json({
-			status: "Error",
-			message: "Invalid Input. All values were not provided.",
+			status: 'Error',
+			message: 'Invalid Input. All values were not provided.',
 		});
 	}
 	const { data, impact, severeImpact } = covid19ImpactEstimator(req.body);
@@ -178,7 +177,7 @@ const dataXml = (req, res, next) => {
 		timeToElapse,
 	} = data;
 	const xml = `
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <root>
   <data>
     <region>
@@ -213,7 +212,7 @@ const dataXml = (req, res, next) => {
   </severeImpact>
 </root>
   `;
-	res.type("application/xml");
+	res.type('application/xml');
 
 	keepMyLog(req, 200);
 	res.status(200).send(xml);
@@ -221,9 +220,9 @@ const dataXml = (req, res, next) => {
 
 // GET: logs
 const logs = (req, res, next) => {
-	fs.readFile(`${__dirname}/logs.txt`, "utf8", (err, data) => {
+	fs.readFile(`${__dirname}/logs.txt`, 'utf8', (err, data) => {
 		if (err) throw err;
-		res.set("Content-Type", "text/plain");
+		res.set('Content-Type', 'text/plain');
 		keepMyLog(req, 200);
 		res.status(200).send(data);
 	});
@@ -233,5 +232,5 @@ module.exports = {
 	welcome,
 	dataJson,
 	dataXml,
-	logs,
+	logs
 };
