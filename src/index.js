@@ -118,25 +118,25 @@ const dataXml = (req, res) => {
     </severeImpact>
   </root>
     `;
-    res.type('application/xml');
+  res.type('application/xml');
 
+  keepMyLog(req, 200);
+  return res.status(200).send(xml);
+};
+
+// GET: logs
+const logs = (req, res) => {
+  fs.readFile(`${__dirname}/logs.txt`, 'utf8', (err, data) => {
+    if (err) throw err;
+    res.set('Content-Type', 'text/plain');
     keepMyLog(req, 200);
-    return res.status(200).send(xml);
-  };
-
-  // GET: logs
-  const logs = (req, res) => {
-    fs.readFile(`${__dirname}/logs.txt`, 'utf8', (err, data) => {
-      if (err) throw err;
-      res.set('Content-Type', 'text/plain');
-      keepMyLog(req, 200);
-      res.status(200).send(data);
-    });
-  };
+    res.status(200).send(data);
+  });
+};
 
 module.exports = {
-welcome,
-dataJson,
-dataXml,
-logs
+  welcome,
+  dataJson,
+  dataXml,
+  logs
 };
