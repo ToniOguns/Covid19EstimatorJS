@@ -16,11 +16,9 @@ let { timeToElapse } = data;
 // normalize days; check for weeks and months if used
 if (periodType === 'months') {
 	timeToElapse = Math.trunc(timeToElapse * 30);
-}
-else if (periodType === 'weeks') {
+}else if (periodType === 'weeks') {
 	timeToElapse = Math.trunc(timeToElapse * 7);
-}
-else {
+}else {
 	timeToElapse = Math.trunc(timeToElapse * 1);
 }
 
@@ -39,10 +37,7 @@ const calculateAvailableBeds = (severeCasesByRequestedTime) => {
 
 // calculate dollarsInFlight
 const calculateDollarsInFlight = (infectionsByRequestedTime) => {
-	const infections =
-		infectionsByRequestedTime *
-		avgDailyIncomeInUSD *
-		avgDailyIncomePopulation;
+	const infections = infectionsByRequestedTime * avgDailyIncomeInUSD * avgDailyIncomePopulation;
 	const result = infections / timeToElapse;
 	return Math.trunc(result);
 };
@@ -116,13 +111,13 @@ const filterInput = (data) => {
 		totalHospitalBeds
 	} = data;
 
-	if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation || !periodType || !timeToElapse
+	if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation
+		|| !periodType || !timeToElapse
 		|| !reportedCases || !population || !totalHospitalBeds
 	) {
 		return false;
-	} else {
-		return true;
 	}
+		return true;
 };
 
 const keepMyLog = (req, responseStatusCode) => {
