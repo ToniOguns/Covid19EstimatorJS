@@ -14,9 +14,15 @@ let { timeToElapse } = data;
 // Custom Functions and Variables
 
 // normalize days; check for weeks and months if used
-if (periodType === 'months') timeToElapse = Math.trunc(timeToElapse * 30);
-else if (periodType === 'weeks') timeToElapse = Math.trunc(timeToElapse * 7);
-else timeToElapse = Math.trunc(timeToElapse * 1);
+if (periodType === 'months') {
+	timeToElapse = Math.trunc(timeToElapse * 30);
+}
+else if (periodType === 'weeks') {
+	timeToElapse = Math.trunc(timeToElapse * 7);
+}
+else {
+	timeToElapse = Math.trunc(timeToElapse * 1);
+}
 
 // calculate InfectionsByRequestedTime
 const calculateInfectionsByRequestedTime = (currentlyInfected) => {
@@ -110,19 +116,13 @@ const filterInput = (data) => {
 		totalHospitalBeds
 	} = data;
 
-	if (!name
-		||!avgAge
-		||!avgDailyIncomeInUSD
-		||!avgDailyIncomePopulation
-		||!periodType
-		||!timeToElapse
-		||!reportedCases
-		||!population
-		||!totalHospitalBeds
-	)
-	return false;
-
-	return true;
+	if (!name || !avgAge || !avgDailyIncomeInUSD || !avgDailyIncomePopulation || !periodType || !timeToElapse
+		|| !reportedCases || !population || !totalHospitalBeds
+	) {
+		return false;
+	} else {
+		return true;
+	}
 };
 
 const keepMyLog = (req, responseStatusCode) => {
@@ -134,7 +134,9 @@ const keepMyLog = (req, responseStatusCode) => {
 		`${__dirname}/logs.txt`,
 		`${kmethod}\t${kpath}\t${kcode}\t${ktime - stime} ms \n`,
 		(err) => {
-			if (err) throw err;
+			if (err) {
+				throw err;
+			}
 		}
 	);
 };
