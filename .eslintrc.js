@@ -20,6 +20,13 @@ module.exports = {
     "comma-dangle": ["error", "never"],
     "indent": ["off", 2],
     "indent": ["off", "tabs"],
+    "no-tabs": ["off", { allowIndentationTabs: true }],
+    "object-curly-newline": ["off", {
+      "ObjectExpression": "always",
+      "ObjectPattern": { "multiline": true },
+      "ImportDeclaration": "never",
+      "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+  }],
     "no-param-reassign": ["error", { "props": false }]
   },
 };
