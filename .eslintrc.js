@@ -18,7 +18,8 @@ module.exports = {
   },
   rules: {
     "comma-dangle": ["error", "never"],
-    "indent": ["error", 2],
+    "indent": ["off", 2],
+    "indent": ["off", "tabs"],
     "no-param-reassign": ["error", { "props": false }]
   },
 };
