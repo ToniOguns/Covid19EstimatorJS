@@ -1,5 +1,3 @@
-
-
 // Estimator
 const covid19ImpactEstimator = (data) => {
   // Destructuring the given data
@@ -95,12 +93,4 @@ const covid19ImpactEstimator = (data) => {
   };
 };
 
-
-
-// module.exports = {
-//   welcome,
 export default covid19ImpactEstimator;
-//   dataJson,
-//   dataXml,
-//   logs
-// };
