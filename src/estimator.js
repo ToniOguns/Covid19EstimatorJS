@@ -25,8 +25,7 @@ const covid19ImpactEstimator = (data) => {
   // calculate AvailableBeds
   const calculateAvailableBeds = (severeCasesByRequestedTime) => {
     const bedsAvailable = totalHospitalBeds * 0.35;
-    const shortage = bedsAvailable - severeCasesByRequestedTime;
-    const result = shortage < 0 ? shortage : bedsAvailable;
+	const result = bedsAvailable;
     return Math.trunc(result);
   };
   // calculate dollarsInFlight
