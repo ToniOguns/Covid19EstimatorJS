@@ -169,12 +169,14 @@ const dataXml = (req, res) => {
 	}
 	const { data, impact, severeImpact } = covid19ImpactEstimator(req.body);
 	const {
-		region: { name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation },
+		region: {
+			name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+		},
 		periodType,
 		reportedCases,
 		totalHospitalBeds,
 		population,
-		timeToElapse,
+		timeToElapse
 	} = data;
 	const xml = `
 <?xml version='1.0' encoding='UTF-8' ?>
