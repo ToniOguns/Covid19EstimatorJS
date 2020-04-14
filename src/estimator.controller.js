@@ -1,19 +1,19 @@
 import estimator from './estimator';
-import { keepMyLog, filterInput} from './index';
+import { keepMyLog, filterInput } from './index';
 
 // POST: JSON
 export const dataJson = (req, res) => {
-    if (!filterInput(req.body)) {
-      keepMyLog(req, 400);
-      return res.status(400).json({
-        status: 'Error',
-        message: 'Invalid Input. All values were not provided.'
-      });
-    }
-    const covid19 = estimator(req.body);
-    keepMyLog(req, 200);
-    return res.status(200).json(covid19);
-  };
+  if (!filterInput(req.body)) {
+    keepMyLog(req, 400);
+    return res.status(400).json({
+      status: 'Error',
+      message: 'Invalid Input. All values were not provided.'
+    });
+  }
+  const covid19 = estimator(req.body);
+  keepMyLog(req, 200);
+  return res.status(200).json(covid19);
+};
 
 // POST: XML
 export const dataXml = (req, res) => {
