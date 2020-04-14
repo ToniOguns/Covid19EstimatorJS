@@ -1,1 +1,3 @@
-web: "node ./bin/www"
+// Procfile
+
+"start": "node ./bin/www"
